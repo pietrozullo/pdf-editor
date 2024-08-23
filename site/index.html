@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Viewer with Page Deletion</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="top-bar">
+        <button id="toggle-sidebar">Toggle Sidebar</button>
+        <button id="download-pdf" style="display: none;">Download PDF</button>
+    </div>
+    <div id="container">
+        <div id="sidebar"></div>
+        <div id="main-content">
+            <div id="drop-area">
+                <p>Drag and drop a PDF file here, or click to select a file</p>
+                <input type="file" id="fileElem" accept="application/pdf" style="display:none">
+            </div>
+            <div id="pdf-viewer"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
