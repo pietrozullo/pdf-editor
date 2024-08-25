@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Viewer with Page Deletion</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div id="top-bar">
-        <button id="toggle-sidebar">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div id="document-name"></div>
-        <button id="download-pdf" style="display: none;">
-            <i class="fas fa-download"></i>
-        </button>
-    </div>
-    <div id="container">
-        <div id="sidebar">
-            <select id="thumbnail-select" size="1"></select>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PDF Viewer with Page Deletion</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="top-bar">
+            <button id="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div id="document-name"></div>
+            <button id="download-pdf" style="display: none;">
+                <i class="fas fa-download"></i>
+            </button>
         </div>
-        <div id="main-content">
-            <div id="drop-area">
-                <p>Drag and drop a PDF file here, or click to select a file</p>
-                <input type="file" id="fileElem" accept="application/pdf" style="display:none">
+        <div id="container">
+            <div id="sidebar">
+                <select id="thumbnail-select" size="1"></select>
             </div>
-            <div id="pdf-viewer"></div>
+            <div id="main-content">
+                <div id="drop-area">
+                    <p>Drag and drop a PDF file here, or click to select a file</p>
+                    <input type="file" id="fileElem" accept="application/pdf" style="display:none">
+                </div>
+                <div id="pdf-viewer"></div>
+            </div>
         </div>
-    </div>
 
-    <script src="script.js"></script>
-</body>
+        <script src="script.js"></script>
+    </body>
 </html>

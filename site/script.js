@@ -1,5 +1,6 @@
 // Set up PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js";
 
 // DOM elements
 const dropArea = document.getElementById("drop-area");
@@ -26,21 +27,21 @@ toggleSidebar.addEventListener("click", () => sidebar.classList.toggle("hidden")
 downloadPdfButton.addEventListener("click", downloadPdf);
 
 // Hide sidebar initially
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   hideSidebar();
 });
 
 // Drag and drop events
-["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
   dropArea.addEventListener(eventName, preventDefaults);
   document.body.addEventListener(eventName, preventDefaults);
 });
 
-["dragenter", "dragover"].forEach(eventName => {
+["dragenter", "dragover"].forEach((eventName) => {
   dropArea.addEventListener(eventName, highlight);
 });
 
-["dragleave", "drop"].forEach(eventName => {
+["dragleave", "drop"].forEach((eventName) => {
   dropArea.addEventListener(eventName, unhighlight);
 });
 
@@ -90,7 +91,7 @@ function uploadFile(file) {
 function loadPDF(data) {
   return pdfjsLib.getDocument(data).promise.then(function (pdf) {
     pdfDoc = pdf;
-    const documentNameElement = document.getElementById('document-name');
+    const documentNameElement = document.getElementById("document-name");
     documentNameElement.textContent = originalFilename;
     pdfViewer.innerHTML = "";
     sidebar.innerHTML = "";
@@ -106,11 +107,11 @@ function loadPDF(data) {
 }
 
 function showSidebar() {
-  sidebar.classList.add('visible');
+  sidebar.classList.add("visible");
 }
 
 function hideSidebar() {
-  sidebar.classList.remove('visible');
+  sidebar.classList.remove("visible");
 }
 
 // Update the toggle sidebar function
@@ -219,7 +220,11 @@ function updateActiveThumbnail() {
 }
 
 function handleKeyDown(e) {
-  if (e.key === "Backspace" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
+  if (
+    e.key === "Backspace" &&
+    document.activeElement.tagName !== "INPUT" &&
+    document.activeElement.tagName !== "TEXTAREA"
+  ) {
     e.preventDefault();
     deletePage(currentPage);
   }
