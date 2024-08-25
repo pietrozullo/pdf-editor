@@ -64,14 +64,22 @@ html {
   cursor: pointer;
   position: relative;
 }
+
+#thumbnail-select {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.thumbnail-container.active {
+  outline: 2px solid blue;
+}
+
 .thumbnail canvas {
   border: 1px solid #ddd;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.thumbnail.active canvas {
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px #007bff;
-}
+
 .delete-button {
   position: absolute;
   top: 5px;

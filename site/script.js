@@ -129,65 +129,82 @@ function renderPage(pageNum, totalPages) {
 }
 
 function renderThumbnail(pageNum) {
-  pdfDoc.getPage(pageNum).then(function (page) {
-    const scale = 0.2;
+  pdfDoc.getPage(pageNum).then(function(page) {
+    const scale = 0.3;
     const viewport = page.getViewport({ scale: scale });
 
-    const thumbnailContainer = document.createElement("div");
-    thumbnailContainer.className = "thumbnail";
-    thumbnailContainer.onclick = (e) => {
-      e.preventDefault();
+    const thumbnailContainer = document.createElement('div');
+    thumbnailContainer.className = 'thumbnail-container';
+    thumbnailContainer.dataset.pageNum = pageNum;
+    thumbnailContainer.addEventListener('click', () => {
       setActivePage(pageNum);
-      scrollToPage(pageNum, false);
-    };
+    });
 
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
     canvas.height = viewport.height;
     canvas.width = viewport.width;
 
-    thumbnailContainer.appendChild(canvas);
+    const renderContext = {
+      canvasContext: context,
+      viewport: viewport
+    };
+    page.render(renderContext);
 
-    const deleteButton = document.createElement("button");
-    deleteButton.className = "delete-button";
-    deleteButton.textContent = "X";
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'delete-button';
+    deleteButton.textContent = 'X';
     deleteButton.onclick = (e) => {
       e.stopPropagation();
       deletePage(pageNum);
     };
+
+    thumbnailContainer.appendChild(canvas);
     thumbnailContainer.appendChild(deleteButton);
 
     sidebar.appendChild(thumbnailContainer);
-
-    const renderContext = {
-      canvasContext: context,
-      viewport: viewport,
-    };
-    page.render(renderContext);
   });
 }
 
+
 function setActivePage(pageNum) {
   currentPage = pageNum;
-  updateActiveThumbnail(pageNum);
+  updateActiveThumbnail();
+  scrollToPage(pageNum, true); // Use smooth scrolling
 }
 
-function updateActiveThumbnail(pageNum) {
-  const thumbnails = sidebar.getElementsByClassName("thumbnail");
-  for (let i = 0; i < thumbnails.length; i++) {
-    thumbnails[i].classList.remove("active");
-  }
-  if (thumbnails.length > 0 && thumbnails[pageNum - 1]) {
-    thumbnails[pageNum - 1].classList.add("active");
+function updateActiveThumbnail() {
+  const thumbnailContainers = document.querySelectorAll('.thumbnail-container');
+  thumbnailContainers.forEach(container => {
+    const pageNum = parseInt(container.dataset.pageNum);
+    if (pageNum === currentPage) {
+      container.classList.add('active');
+    } else {
+      container.classList.remove('active');
+    }
+  });
+}
+
+function updateActivePageWithoutScroll(pageNum) {
+  if (pageNum !== currentPage) {
+    currentPage = pageNum;
+    updateActiveThumbnail();
   }
 }
 
 function scrollToPage(pageNum, smooth = true) {
   const pageElement = document.getElementById(`page-${pageNum}`);
   if (pageElement) {
-    pageElement.scrollIntoView({ behavior: smooth ? "smooth" : "auto" });
+    const mainContent = document.getElementById('main-content');
+    const topOffset = pageElement.offsetTop - mainContent.offsetTop;
+    
+    mainContent.scrollTo({
+      top: topOffset,
+      behavior: smooth ? 'smooth' : 'auto'
+    });
   }
 }
+
 
 function handleKeyDown(e) {
   if (
@@ -397,15 +414,6 @@ function updateRemainingPages(deletedPageNum) {
   }
 }
 
-function updateActiveThumbnail(pageNum) {
-  const thumbnails = sidebar.getElementsByClassName("thumbnail");
-  for (let i = 0; i < thumbnails.length; i++) {
-    thumbnails[i].classList.remove("active");
-  }
-  if (thumbnails.length > 0 && thumbnails[pageNum - 1]) {
-    thumbnails[pageNum - 1].classList.add("active");
-  }
-}
 
 function downloadPdf() {
   if (pdfData) {
@@ -426,14 +434,14 @@ function downloadPdf() {
   } else {
     alert("No PDF loaded to download.");
   }
-}
+} 
+
 
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const pageNum = parseInt(entry.target.id.split("-")[1]);
-        // Only update if it's different from the current page
         if (pageNum !== currentPage) {
           setActivePage(pageNum);
         }
