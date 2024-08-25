@@ -84,6 +84,8 @@ function uploadFile(file) {
 function loadPDF(data) {
   return pdfjsLib.getDocument(data).promise.then(function (pdf) {
     pdfDoc = pdf;
+    const documentNameElement = document.getElementById('document-name');
+    documentNameElement.textContent = originalFilename;
     pdfViewer.innerHTML = "";
     sidebar.innerHTML = "";
     const numPages = pdf.numPages;
