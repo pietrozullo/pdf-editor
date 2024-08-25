@@ -25,6 +25,11 @@ fileElem.addEventListener("change", handleFiles);
 toggleSidebar.addEventListener("click", () => sidebar.classList.toggle("hidden"));
 downloadPdfButton.addEventListener("click", downloadPdf);
 
+// Hide sidebar initially
+document.addEventListener('DOMContentLoaded', () => {
+  hideSidebar();
+});
+
 // Drag and drop events
 ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
   dropArea.addEventListener(eventName, preventDefaults);
@@ -96,8 +101,22 @@ function loadPDF(data) {
       removeUploadArea();
     }
     setActivePage(Math.min(currentPage, numPages));
+    showSidebar(); // Add this line to show the sidebar
   });
 }
+
+function showSidebar() {
+  sidebar.classList.add('visible');
+}
+
+function hideSidebar() {
+  sidebar.classList.remove('visible');
+}
+
+// Update the toggle sidebar function
+toggleSidebar.addEventListener("click", () => {
+  sidebar.classList.toggle("visible");
+});
 
 function removeUploadArea() {
   dropArea.style.display = "none";

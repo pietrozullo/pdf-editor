@@ -14,12 +14,13 @@ body, html {
   top: 0;
   left: 0;
   right: 0;
-  height: 60px;
+  height: 50px;
   background-color: #323639;
   display: flex;
   align-items: center;
   padding: 0 20px;
   z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Added shadow */
 }
 
 #top-bar button {
@@ -80,11 +81,11 @@ body, html {
   flex-shrink: 0;
   padding: 20px;
   box-sizing: border-box;
-  margin-left: 0;
+  margin-left: -300px;
 }
 
-#sidebar.hidden {
-  margin-left: -300px;
+#sidebar.visible {
+  margin-left: 0px;
 }
 
 #thumbnail-select {
@@ -163,14 +164,15 @@ body, html {
 .page-container {
   margin-bottom: 40px;
   background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 8px rgba(0, 0, 0, 0.2);
+  
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   max-width: 800px;
+  transition: box-shadow 0.3s ease;
 }
 
 .page-container canvas {
