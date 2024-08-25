@@ -1,5 +1,5 @@
-body,
-html {
+/* Global Styles */
+body, html {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
@@ -8,6 +8,7 @@ html {
   background-color: #525659;
 }
 
+/* Top Bar */
 #top-bar {
   position: fixed;
   top: 0;
@@ -35,6 +36,7 @@ html {
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 #top-bar button:hover {
   background-color: #525659;
 }
@@ -46,12 +48,15 @@ html {
   flex-grow: 1;
 }
 
+/* Main Container */
 #container {
   display: flex;
   height: 100%;
   padding-top: 50px;
   box-sizing: border-box;
 }
+
+/* Main Content */
 #main-content {
   flex-grow: 1;
   overflow-y: auto;
@@ -66,6 +71,7 @@ html {
   box-sizing: border-box;
 }
 
+/* Sidebar */
 #sidebar {
   width: 300px;
   background-color: #323639;
@@ -76,36 +82,41 @@ html {
   box-sizing: border-box;
   margin-left: 0;
 }
+
 #sidebar.hidden {
   margin-left: -300px;
-}
-
-.thumbnail-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-  opacity: 0.6;
-  transition: opacity 0.3s;
-}
-
-.thumbnail-container:hover {
-  opacity: 0.8;
-}
-
-.thumbnail-container.active {
-  opacity: 1;
-  border: 2px solid #007bff;
-}
-
-.thumbnail {
-  cursor: pointer;
 }
 
 #thumbnail-select {
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  background-color: #323639;
+  border: none;
+}
+
+/* Thumbnails */
+.thumbnail-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  transition: opacity 0.3s;
+}
+
+.thumbnail {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.thumbnail:hover {
+  opacity: 0.8;
+}
+
+.thumbnail.active {
+  opacity: 1;
+  outline: 6px solid lightblue;
 }
 
 .thumbnail canvas {
@@ -115,8 +126,8 @@ html {
 
 .delete-button {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 0;
+  right: 0;
   background-color: #ff4444;
   color: white;
   border: none;
@@ -128,7 +139,10 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
+
+/* Drop Area */
 #drop-area {
   border: 2px dashed #ccc;
   border-radius: 20px;
@@ -140,9 +154,12 @@ html {
   background-color: white;
   box-sizing: border-box;
 }
+
 #drop-area.highlight {
   border-color: #007bff;
 }
+
+/* Page Container */
 .page-container {
   margin-bottom: 40px;
   background-color: white;
@@ -155,9 +172,11 @@ html {
   width: 100%;
   max-width: 800px;
 }
+
 .page-container canvas {
   max-width: 100%;
 }
+
 .page-number {
   text-align: center;
   font-size: 14px;
