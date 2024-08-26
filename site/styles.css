@@ -45,9 +45,25 @@ html {
 
 #document-name {
   color: white;
-  font-size: 18px;
+  font-size: 11px;  /* Reduced from 11px to 9px */
   text-align: center;
   flex-grow: 1;
+  font-weight: bold;  /* Added to make the text bold */
+}
+
+#github-link {
+  color: white;
+  font-size: 20px;
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+#github-link i {
+  color: white;  /* This ensures the icon itself is white */
+}
+
+#github-link:hover {
+  opacity: 0.8;  /* This gives a slight hover effect */
 }
 
 /* Main Container */
