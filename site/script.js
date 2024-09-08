@@ -181,7 +181,7 @@ function renderThumbnail(pageNum) {
 
     const deleteButton = document.createElement("button");
     deleteButton.className = "delete-button";
-    deleteButton.textContent = "X";
+    deleteButton.textContent = "x";
     deleteButton.onclick = (e) => {
       e.stopPropagation();
       deletePage(pageNum);
@@ -452,3 +452,18 @@ const mutationObserver = new MutationObserver((mutations) => {
 });
 
 mutationObserver.observe(pdfViewer, { childList: true });
+
+
+let parallaxEnabled = true;
+document.addEventListener('mousemove', (e) => {
+  if (!parallaxEnabled) return;
+
+  const mouseX = (e.clientX / window.innerWidth - 0.5) * 2; // -1 to 1
+  const mouseY = (e.clientY / window.innerHeight - 0.5) * 2; // -1 to 1
+
+  const rotateX = mouseY * -10; // Rotation around X-axis
+  const rotateY = mouseX * 10; // Rotation around Y-axis
+  const translateZ = 50; // Gives a bit of a "push" effect
+
+  pdfViewer.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ * (1 - Math.abs(mouseX))}px)`;
+});
