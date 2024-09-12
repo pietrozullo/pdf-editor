@@ -418,6 +418,10 @@ function downloadPdf() {
 
     link.download = newFilename;
     link.click();
+    
+    // Capture the download event
+    posthog.capture('pdf_downloaded');
+    
     URL.revokeObjectURL(link.href);
   } else {
     alert("No PDF loaded to download.");
