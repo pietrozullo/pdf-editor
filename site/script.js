@@ -536,7 +536,7 @@ const mutationObserver = new MutationObserver((mutations) => {
 mutationObserver.observe(pdfViewer, { childList: true });
 
 
-let parallaxEnabled = true;
+let parallaxEnabled = false;
 document.addEventListener('mousemove', (e) => {
   if (!parallaxEnabled) return;
 
@@ -549,3 +549,90 @@ document.addEventListener('mousemove', (e) => {
 
   pdfViewer.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ * (1 - Math.abs(mouseX))}px)`;
 });
+
+// Zoom-related global variables
+let currentZoom = 1;
+const MIN_ZOOM = 0.5;
+const MAX_ZOOM = 3;
+const ZOOM_STEP = 0.1;
+
+// Function to handle zooming
+function zoomPDF(delta) {
+  // Calculate new zoom level
+  let newZoom = currentZoom + (delta * ZOOM_STEP);
+  
+  // Clamp zoom between min and max
+  newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newZoom));
+  
+  // Apply zoom with transform
+  pdfViewer.style.transform = `scale(${newZoom})`;
+  pdfViewer.style.transformOrigin = 'top center';
+  
+  // Adjust container to allow full scrolling
+  pdfViewer.style.width = `${100 / newZoom}%`;
+  pdfViewer.style.height = `${100 / newZoom}%`;
+  
+  // Update current zoom
+  currentZoom = newZoom;
+}
+
+// Comprehensive event listener to prevent default zoom
+document.addEventListener('wheel', (e) => {
+  // Prevent default browser zoom completely when Ctrl key is pressed
+  if (e.ctrlKey) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Determine zoom direction
+    const delta = e.deltaY < 0 ? 1 : -1;
+    
+    zoomPDF(delta);
+    
+    // Additional measures to prevent browser zoom
+    return false;
+  }
+}, { passive: false });
+
+// Prevent pinch zoom on touch devices
+document.addEventListener('touchmove', (e) => {
+  if (e.touches.length > 1) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+// Prevent browser zoom shortcuts
+document.addEventListener('keydown', (e) => {
+  // Prevent Ctrl + +/- browser zoom
+  if (e.ctrlKey && (e.key === '+' || e.key === '-')) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Zoom functionality
+    const delta = e.key === '+' ? 1 : -1;
+    zoomPDF(delta);
+    
+    return false;
+  }
+  
+  // Ctrl + 0: Reset Zoom
+  if (e.ctrlKey && e.key === '0') {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    currentZoom = 1;
+    pdfViewer.style.transform = 'scale(1)';
+    pdfViewer.style.width = '100%';
+    pdfViewer.style.height = '100%';
+    
+    return false;
+  }
+}, { passive: false });
+
+// Disable browser zoom in meta tag (if not already in HTML)
+const metaViewport = document.querySelector('meta[name="viewport"]');
+if (!metaViewport) {
+  const meta = document.createElement('meta');
+  meta.name = 'viewport';
+  meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+  document.head.appendChild(meta);
+}

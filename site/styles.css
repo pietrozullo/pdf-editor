@@ -9,6 +9,17 @@ html {
   background-color: #525659;
 }
 
+#pdf-viewer-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  position: relative;
+}
+
+#pdf-viewer {
+  transition: transform 0.2s ease;
+  transform-origin: top left;
+}
 /* Top Bar */
 #top-bar {
   position: fixed;
