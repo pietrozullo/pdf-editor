@@ -88,6 +88,84 @@ function uploadFile(file) {
   reader.readAsArrayBuffer(file);
 }
 
+async function mergePDFs(newPdfData) {
+  try {
+    // Load the current PDF document with encryption option
+    const currentPDFDoc = await PDFLib.PDFDocument.load(pdfData, { ignoreEncryption: true });
+    
+    // Load the new PDF document with encryption option
+    const newPDFDoc = await PDFLib.PDFDocument.load(newPdfData, { ignoreEncryption: true });
+    
+    // Copy pages from the new PDF to the current PDF
+    const copiedPages = await currentPDFDoc.copyPages(newPDFDoc, 
+      newPDFDoc.getPageIndices()
+    );
+    
+    // Add the copied pages to the end of the current PDF
+    copiedPages.forEach((page) => {
+      currentPDFDoc.addPage(page);
+    });
+    
+    // Save the merged PDF
+    const mergedPdfBytes = await currentPDFDoc.save();
+    
+    // Update global PDF data
+    pdfData = mergedPdfBytes.buffer;
+    
+    // Reload the PDF document
+    pdfDoc = await pdfjsLib.getDocument(pdfData).promise;
+    
+    // Clear existing pages and thumbnails
+    pdfViewer.innerHTML = "";
+    sidebar.innerHTML = "";
+    
+    // Render all pages of the merged PDF
+    const numPages = pdfDoc.numPages;
+    for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+      renderPage(pageNum, numPages);
+      renderThumbnail(pageNum);
+    }
+    
+    // Set active page to the first page
+    setActivePage(1);
+    
+    // Ensure download button is visible
+    downloadPdfButton.style.display = "inline-block";
+  } catch (error) {
+    console.error("Error merging PDFs:", error);
+    
+    // More detailed error handling
+    if (error.message.includes("encrypted")) {
+      alert("The PDF is encrypted. Cannot merge encrypted PDFs.");
+    } else {
+      alert("An error occurred while merging PDFs. Please try again.");
+    }
+  }
+}
+
+// Sidebar drop event listener remains the same as in the previous version
+sidebar.addEventListener("drop", async (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  
+  const files = e.dataTransfer.files;
+  
+  if (files.length > 0) {
+    const file = files[0];
+    
+    if (file.type !== "application/pdf") {
+      alert("Please upload a PDF file.");
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = async function (e) {
+      const newPdfData = e.target.result;
+      await mergePDFs(newPdfData);
+    };
+    reader.readAsArrayBuffer(file);
+  }
+});
 function loadPDF(data) {
   return pdfjsLib.getDocument(data).promise.then(function (pdf) {
     pdfDoc = pdf;
